@@ -1,6 +1,7 @@
 package com.example.dayscheduler.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,6 +12,7 @@ import com.example.dayscheduler.ui.schedule.current.CurrentScheduleView
 import com.example.dayscheduler.ui.schedule.list.AllSchedulesView
 import com.example.dayscheduler.ui.settings.SettingsView
 import com.example.dayscheduler.ui.task.create.CreateTaskView
+import com.example.dayscheduler.ui.task.create.CreateTaskViewModel
 
 @Composable
 fun Navigation(navController: NavHostController) {
@@ -30,7 +32,8 @@ fun Navigation(navController: NavHostController) {
             })
         }
         composable(route = NavItem.CreateTask.screen_route){
-            CreateTaskView()
+            val viewModel = hiltViewModel<CreateTaskViewModel>()
+            CreateTaskView(viewModel)
         }
     }
 }
