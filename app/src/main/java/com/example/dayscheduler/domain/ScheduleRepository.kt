@@ -2,7 +2,7 @@ package com.example.dayscheduler.domain
 
 import com.example.dayscheduler.data.db.dao.ScheduleDao
 import com.example.dayscheduler.data.db.dao.ScheduleDateDao
-import com.example.dayscheduler.data.db.entity.TaskEntity
+import com.example.dayscheduler.data.db.entity.ScheduleFull
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleDateEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +16,12 @@ class ScheduleRepository @Inject constructor(
     suspend fun saveScheduleDate(scheduleDate: ScheduleDateEntity) {
         withContext(Dispatchers.IO) {
             scheduleDateDao.insert(scheduleDate)
+        }
+    }
+
+    suspend fun getAllSchedules(): Flow<List<ScheduleFull>>{
+        return withContext(Dispatchers.IO) {
+            scheduleDao.getScheduleFull()
         }
     }
 

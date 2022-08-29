@@ -1,7 +1,9 @@
-package com.example.dayscheduler.data.db.entity
+package com.example.dayscheduler.data.db.entity.task
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.dayscheduler.data.db.entity.schedule.ScheduleEntity
 
 @Entity(tableName = "tasks")
 data class TaskEntity(

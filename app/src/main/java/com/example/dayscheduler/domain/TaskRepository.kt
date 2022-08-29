@@ -1,9 +1,7 @@
 package com.example.dayscheduler.domain
 
-import com.example.dayscheduler.data.db.dao.ScheduleDao
-import com.example.dayscheduler.data.db.dao.ScheduleDateDao
 import com.example.dayscheduler.data.db.dao.TaskDao
-import com.example.dayscheduler.data.db.entity.TaskEntity
+import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
