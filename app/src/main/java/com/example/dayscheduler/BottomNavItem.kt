@@ -11,5 +11,6 @@ sealed class BottomNavItem( var title:String, var icon:Int, var screen_route:Str
 }
 
 sealed class NavItem(val title: String, val screen_route: String) {
-    object CreateTask: NavItem("create_task","create_tasks")
+    object CreateTask: NavItem("create task","create_tasks")
+    object ConfirmScheduleView: NavItem("confirm schedule", "confirm_schedule")
 }

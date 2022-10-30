@@ -1,19 +1,26 @@
 package com.example.dayscheduler.ui.schedule.create
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.example.dayscheduler.ui.util.TAG
 
 @Composable
 fun CreateScheduleView (
@@ -21,17 +28,58 @@ fun CreateScheduleView (
     onCreateTaskClick: () -> Unit
 ){
     val tasks by viewModel.tasks.observeAsState(initial = emptyList())
+    val selectedTasks by viewModel.selectedTasks.observeAsState(initial = emptyList())
+    val showCreateSchedule by viewModel.createScheduleClicked.observeAsState()
+    val showConfirmDialog = remember {
+        mutableStateOf(false)
+    }
+    val fabAlpha = remember {
+        mutableStateOf(0f)
+    }
+    if(selectedTasks.isNotEmpty()) {
+        fabAlpha.value = 1f
+    }
+    else {
+        fabAlpha.value = 0f
+    }
 
+//    if(showConfirmDialog.value) {
+//        Log.d(TAG.commonTag," TESTING")
+//        CreateScheduleViewFromTasks(viewModel, onDismiss = {
+//            showConfirmDialog.value = false
+//        })
+//    }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(8.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        if(tasks.isEmpty()){
-            ShowCreateTaskView(onCreateTaskClick)
+    Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
+        FloatingActionButtonCreateSchedule(
+        onAddClick = {
+            Log.d(TAG.commonTag,"onAddClick")
+            showConfirmDialog.value = true
+            fabAlpha.value = 0f
+        }, modifier = Modifier.alpha(fabAlpha.value))
+    }
+    ) { paddingValues ->
+        if(showConfirmDialog.value) {
+            Log.d(TAG.commonTag," show Confirm dialog")
+            ConfirmScheduleView(viewModel = viewModel)
         } else {
-            CreateSchedule()
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 8.dp,
+                    end = 8.dp,
+                    start = 8.dp,
+                    bottom = paddingValues.calculateBottomPadding()),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                if (tasks.isEmpty()) {
+                    ShowCreateTaskView(onCreateTaskClick)
+                } else {
+                    CreateTaskCardView(onCreateTaskClick)
+                    CreateSchedule(tasks, viewModel)
+                }
+            }
         }
     }
+
 }
 
 @Composable
@@ -42,13 +90,102 @@ fun ShowCreateTaskView(
         .wrapContentHeight()
         .fillMaxWidth()
         .padding(8.dp)) {
-        Text(text = "There are no tasks, go and create one!", modifier = Modifier.padding(8.dp).clickable {
-            onCreateTaskClick()
-        }, textAlign = TextAlign.Center)
+        Text(text = "There are no tasks, go and create one!", modifier = Modifier
+            .padding(8.dp)
+            .clickable {
+                onCreateTaskClick()
+            }, textAlign = TextAlign.Center)
     }
 }
 
 @Composable
-fun CreateSchedule() {
-
+fun CreateTaskCardView(onCreateTaskClick: () -> Unit) {
+    Card(elevation = 4.dp, modifier = Modifier
+        .wrapContentHeight()
+        .fillMaxWidth()
+        .padding(8.dp)) {
+        Text(text = "Need more tasks?\nGo and create one!", modifier = Modifier
+            .padding(8.dp)
+            .clickable {
+                onCreateTaskClick()
+            }, textAlign = TextAlign.Center)
+    }
 }
+
+@Composable
+fun CreateSchedule(tasks: List<TaskItem>, viewModel: CreateScheduleViewModel) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(10.dp)) {
+        Text(text = "Choose tasks to your schedule", modifier = Modifier.padding(top = 10.dp, bottom = 10.dp))
+        LazyColumn(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(2.dp), state = rememberLazyListState(),
+            content = {
+                items(tasks) { task ->
+                    TasksView(task = task, viewModel)
+                }
+            })
+    }
+}
+
+@Composable
+fun FloatingActionButtonCreateSchedule(
+    onAddClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FloatingActionButton(onClick = { onAddClick() }, backgroundColor = Color.Black, contentColor = Color.Magenta, modifier = modifier) {
+        Icon(Icons.Filled.Add, "")
+    }
+}
+
+@Composable
+fun TasksView(task: TaskItem, createScheduleViewModel: CreateScheduleViewModel) {
+    var backgroundColor by remember {
+        mutableStateOf(Color.White)
+    }
+    Card(elevation = 4.dp, modifier = Modifier
+        .padding(8.dp)
+        .selectable(selected = task.isSelected.value, onClick = {
+            task.toggle()
+            if (task.isSelected.value) {
+                createScheduleViewModel.addSelectedTask(task)
+            } else {
+                createScheduleViewModel.removeSelectedTask(task)
+            }
+            backgroundColor = if (task.isSelected.value) {
+                Color.Cyan
+            } else Color.White
+        })
+
+    ) {
+        Column (modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(backgroundColor)
+            .padding(8.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start){
+            Text(text = task.name, fontWeight = FontWeight.Bold,
+                color = Color.Black,)
+            task.additionalInfo?.let {
+                Text(text = it, fontWeight = FontWeight.Bold,
+                    color = Color.Black,)
+            }
+
+        }
+
+    }
+}
+
+
+
+data class TaskItem(
+    val id: Int,
+    val name: String,
+    val additionalInfo: String?,
+    var isSelected: MutableState<Boolean>
+) {
+    fun toggle() {
+        isSelected.value = !isSelected.value
+    }
+}
+

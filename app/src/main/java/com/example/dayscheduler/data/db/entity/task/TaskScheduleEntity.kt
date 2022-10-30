@@ -4,7 +4,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleEntity
-
+/**
+ * This entity is to store whaaat?
+ */
 @Entity(tableName = "task_schedules",
     foreignKeys = [
         ForeignKey(

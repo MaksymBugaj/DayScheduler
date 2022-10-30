@@ -6,7 +6,9 @@ import com.example.dayscheduler.data.db.entity.schedule.ScheduleDateEntity
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleEntity
 import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import com.example.dayscheduler.data.db.entity.task.TaskScheduleEntity
-
+/**
+ * This entity is to store whaaat?
+ */
 data class ScheduleFull(
     @Embedded
     val schedule: ScheduleEntity,

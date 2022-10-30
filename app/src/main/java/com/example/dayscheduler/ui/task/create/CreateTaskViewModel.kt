@@ -3,6 +3,7 @@ package com.example.dayscheduler.ui.task.create
 import androidx.lifecycle.*
 import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import com.example.dayscheduler.domain.TaskRepository
+import com.example.dayscheduler.domain.model.TaskModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +32,7 @@ class CreateTaskViewModel @Inject constructor(
 
     fun save(){
         viewModelScope.launch {
-            taskRepository.saveTask(TaskEntity(id = 0, name = _newTaskName.value!!, additionalInfo = _newTaskAdditionalInfo.value))
+            taskRepository.saveTask(TaskModel(id = 0, name = _newTaskName.value!!, additionalInfo = _newTaskAdditionalInfo.value))
             _savePossible.postValue(true)
         }
     }

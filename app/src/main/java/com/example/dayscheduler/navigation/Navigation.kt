@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.dayscheduler.BottomNavItem
 import com.example.dayscheduler.NavItem
+import com.example.dayscheduler.ui.schedule.create.ConfirmScheduleView
 import com.example.dayscheduler.ui.schedule.create.CreateScheduleView
 import com.example.dayscheduler.ui.schedule.create.CreateScheduleViewModel
 import com.example.dayscheduler.ui.schedule.current.CurrentScheduleView
