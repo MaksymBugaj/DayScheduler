@@ -14,6 +14,7 @@ import com.example.dayscheduler.domain.TaskRepository
 import com.example.dayscheduler.domain.model.TaskModel
 import com.example.dayscheduler.ui.util.TAG
 import com.example.dayscheduler.util.livedata.EmptySingleLiveEvent
+import com.example.dayscheduler.util.livedata.SafeMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -34,7 +35,7 @@ class CreateScheduleViewModel @Inject constructor(
 
     private val taskList = mutableListOf<TaskItem>()
 
-    private val _selectedTasks = MutableLiveData<List<TaskModel>>(emptyList())
+    private val _selectedTasks = SafeMutableLiveData<List<TaskModel>>(emptyList())
     val selectedTasks :LiveData<List<TaskModel>> = _selectedTasks
 
     val createScheduleClicked = EmptySingleLiveEvent()
@@ -62,6 +63,7 @@ class CreateScheduleViewModel @Inject constructor(
     }
 
     fun daysChanged(day: Int){
+        Log.d(TAG.commonTag,"daysChanged: $days")
         if(days.contains(day)) days.remove(day)
         else days.add(day)
 
@@ -77,6 +79,12 @@ class CreateScheduleViewModel @Inject constructor(
         taskList.remove(taskItem)
         _selectedTasks.value = taskList.map {
             TaskModel(it)
+        }
+    }
+
+    fun save(){
+        if(_selectedTasks.value.isNotEmpty() && days.isNotEmpty()){
+
         }
     }
 

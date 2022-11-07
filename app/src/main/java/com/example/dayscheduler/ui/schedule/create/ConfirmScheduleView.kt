@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Modifier.Companion.any
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -32,9 +33,9 @@ fun ConfirmScheduleView(viewModel: CreateScheduleViewModel) {
     // Creating a TimePicker dialod
     val mTimePickerDialog = TimePickerDialog(
         LocalContext.current,
-        {_, mHour : Int, mMinute: Int ->
+        { _, mHour : Int, mMinute: Int ->
             mTime.value = "$mHour:$mMinute"
-        }, hour, minute, false
+        }, hour, minute, true
     )
     val days : Array<String> =
     DateFormatSymbols.getInstance(Locale.getDefault()).shortWeekdays
@@ -50,14 +51,14 @@ fun ConfirmScheduleView(viewModel: CreateScheduleViewModel) {
         //przypomnij o: -> date chooser
         Text(
             text = "Set reminder hour for this schedule",
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.body1,
             modifier = Modifier.clickable { mTimePickerDialog.show() }
         )
-        Text(text = mTime.value, style = MaterialTheme.typography.body1)
+        Text(text = mTime.value, style = MaterialTheme.typography.body2)
         //powtarzalność: -> days chooser jako alert dialog
         Text(
             text = "repeat",
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.body1,
             modifier = Modifier.clickable { showDaysDialog.value = true }
         )
         if(showDaysDialog.value) {
@@ -69,26 +70,50 @@ fun ConfirmScheduleView(viewModel: CreateScheduleViewModel) {
                 showDaysDialog.value = false
             })
         }
-        if(vmDays.isNotEmpty()) {
-            Log.d(TAG.commonTag," vmDays: ${vmDays.size}")
-            val newDay = vmDays.flatMap {
-                days.mapIndexed { index, s ->
-                    if(it == index) s
-                    else ""
-                }
-            }
-            val textToShow = newDay.joinToString(separator = ", ")
-            Text(text = textToShow)
-        }
 
+        if(vmDays.isNotEmpty()) {
+            val commonDays = vmDays.intersect(days.mapIndexed { index, _ -> index }.toSet())
+            Log.d(TAG.commonTag," common days: $commonDays")
+            Log.d(TAG.commonTag," days map indexed: ${days.mapIndexed { index, s -> index }}")
+
+
+            val testCommon = days.filterIndexed { index, s ->
+                Log.d(TAG.commonTag," mapIndexed: $index is: $s")
+                commonDays.contains(index)
+            }
+
+            Log.d(TAG.commonTag," testCommon: $testCommon")
+            val textToShow = testCommon.joinToString(separator = ", ")
+            Text(text = textToShow, style = MaterialTheme.typography.body2)
+        }
+        SaveButton(viewModel)
 
     }
 }
 
 @Composable
-fun WeekDays(viewModel: CreateScheduleViewModel) {
+fun SetScheduleGoal(viewModel: CreateScheduleViewModel) {
 
 }
+
+@Composable
+fun SetScheduleName(viewModel: CreateScheduleViewModel) {
+
+}
+
+@Composable
+fun SaveButton(viewModel: CreateScheduleViewModel) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(12.dp)
+            .background(Color.Cyan),
+        onClick = { viewModel.save() }) {
+        Text(text = "Confirm", style = MaterialTheme.typography.body2)
+    }
+}
+
 @Composable
 fun CreateScheduleViewFromTasks(
     viewModel: CreateScheduleViewModel,
@@ -114,16 +139,18 @@ fun CreateScheduleViewFromTasks(
             text = {
                 var iterator = 1
                 Column {
-                    for (item in weekDaysTest){
-
-                         WeekDayCheckBox(
-                            iterator = iterator,
-                            onCheckedChange = {
-                                viewModel.daysChanged(it)
-                            },
-                            label = item.name
-                        )
-                        ++iterator
+                    for (item in weekDays){
+                        if(item.isNotEmpty()) {
+                            WeekDayCheckBox(
+                                iterator = iterator,
+                                onCheckedChange = {
+                                    Log.d(TAG.commonTag, "OnCheckedChanged: $it")
+                                    viewModel.daysChanged(it)
+                                },
+                                label = item
+                            )
+                            ++iterator
+                        }
                     }
                 }
             },
@@ -176,7 +203,10 @@ fun WeekDayCheckBox(
     ) {
         Checkbox(
             checked = checked.value,
-            onCheckedChange = { checked.value = !checked.value}
+            onCheckedChange = {
+                checked.value = !checked.value
+                onCheckedChange(iterator)
+            }
         )
 
         Spacer(Modifier.size(6.dp))
