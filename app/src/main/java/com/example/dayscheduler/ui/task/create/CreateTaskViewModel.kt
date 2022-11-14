@@ -1,8 +1,7 @@
 package com.example.dayscheduler.ui.task.create
 
 import androidx.lifecycle.*
-import com.example.dayscheduler.data.db.entity.task.TaskEntity
-import com.example.dayscheduler.domain.TaskRepository
+import com.example.dayscheduler.domain.repository.TaskRepository
 import com.example.dayscheduler.domain.model.TaskModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

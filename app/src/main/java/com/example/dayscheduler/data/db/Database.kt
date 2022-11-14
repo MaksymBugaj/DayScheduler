@@ -20,7 +20,7 @@ import com.example.dayscheduler.data.db.entity.task.TaskScheduleEntity
         ScheduleDateEntity::class,
         TaskScheduleEntity::class
     ],
-    version = 2
+    version = 3
 )
 @TypeConverters(
     ZonedDateTimeConverter::class

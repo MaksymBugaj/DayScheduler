@@ -1,13 +1,11 @@
-package com.example.dayscheduler.domain
+package com.example.dayscheduler.domain.repository
 
 import com.example.dayscheduler.data.db.dao.TaskDao
-import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import com.example.dayscheduler.data.mapper.TaskMapper
 import com.example.dayscheduler.domain.model.TaskModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

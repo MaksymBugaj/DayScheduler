@@ -86,6 +86,8 @@ fun ConfirmScheduleView(viewModel: CreateScheduleViewModel) {
             val textToShow = testCommon.joinToString(separator = ", ")
             Text(text = textToShow, style = MaterialTheme.typography.body2)
         }
+        SetScheduleGoal(viewModel = viewModel)
+        SetScheduleName(viewModel = viewModel)
         SaveButton(viewModel)
 
     }
@@ -93,12 +95,24 @@ fun ConfirmScheduleView(viewModel: CreateScheduleViewModel) {
 
 @Composable
 fun SetScheduleGoal(viewModel: CreateScheduleViewModel) {
-
+    val scheduleGoal by viewModel.scheduleGoal.observeAsState("")
+    OutlinedTextField(
+        value = scheduleGoal,
+        onValueChange = {
+        viewModel.setScheduleGoal(it)
+        }
+    )
 }
 
 @Composable
 fun SetScheduleName(viewModel: CreateScheduleViewModel) {
-
+    val scheduleName by viewModel.scheduleName.observeAsState("")
+    OutlinedTextField(
+        value = scheduleName,
+        onValueChange = {
+            viewModel.setScheduleName(it)
+        }
+    )
 }
 
 @Composable
