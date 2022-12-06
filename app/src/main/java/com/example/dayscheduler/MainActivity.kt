@@ -63,7 +63,7 @@ fun BottomNavigation(navController: NavController) {
             BottomNavigationItem(
                 icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
                 label = { Text(text = item.title,
-                    fontSize = 9.sp) },
+                    fontSize = 10.sp) },
                 selectedContentColor = Color.Black,
                 unselectedContentColor = Color.Black.copy(0.4f),
                 alwaysShowLabel = true,
@@ -119,4 +119,9 @@ fun BottomNavigation(navController: NavController) {
 /**
  * cel powyzszych to koniec 22 pazdziernika
  * wstepnie proponuje 5h (8->9:15| 10->12| 15-> 16:45?)
+ */
+
+/**
+ * aktualnie jest 6.12
+ * create schedule został wstępnie osiągnięty
  */

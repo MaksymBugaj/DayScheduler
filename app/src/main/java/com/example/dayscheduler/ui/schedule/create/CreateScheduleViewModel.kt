@@ -117,6 +117,7 @@ class CreateScheduleViewModel @Inject constructor(
                 val tasks = _selectedTasks.value.map {
                     TaskScheduleEntity(it, scheduleId.toInt())
                 }
+                Log.d(TAG.commonTag,"tasks: $tasks")
                 scheduleRepository.saveTaskScheduleWithCorrespondingId(tasks)
 
             }

@@ -1,7 +1,9 @@
 package com.example.dayscheduler.ui.schedule.create
 
 import android.app.TimePickerDialog
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -46,7 +48,9 @@ fun ConfirmScheduleView(viewModel: CreateScheduleViewModel) {
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)
-        .padding(8.dp)
+        .padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
         //przypomnij o: -> date chooser
         Text(
@@ -88,8 +92,9 @@ fun ConfirmScheduleView(viewModel: CreateScheduleViewModel) {
         }
         SetScheduleGoal(viewModel = viewModel)
         SetScheduleName(viewModel = viewModel)
-        SaveButton(viewModel)
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            SaveButton(viewModel)
+        }
     }
 }
 
@@ -100,6 +105,9 @@ fun SetScheduleGoal(viewModel: CreateScheduleViewModel) {
         value = scheduleGoal,
         onValueChange = {
         viewModel.setScheduleGoal(it)
+        },
+        label = {
+            Text(text = "Schedule Goal")
         }
     )
 }
@@ -109,12 +117,14 @@ fun SetScheduleName(viewModel: CreateScheduleViewModel) {
     val scheduleName by viewModel.scheduleName.observeAsState("")
     OutlinedTextField(
         value = scheduleName,
-        onValueChange = {
-            viewModel.setScheduleName(it)
+        onValueChange = viewModel::setScheduleName,
+        label = {
+            Text(text = "Schedule Name")
         }
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SaveButton(viewModel: CreateScheduleViewModel) {
     Button(
@@ -123,7 +133,7 @@ fun SaveButton(viewModel: CreateScheduleViewModel) {
             .wrapContentHeight()
             .padding(12.dp)
             .background(Color.Cyan),
-        onClick = { viewModel.save() }) {
+        onClick =  viewModel::save) {
         Text(text = "Confirm", style = MaterialTheme.typography.body2)
     }
 }

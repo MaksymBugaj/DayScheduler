@@ -2,6 +2,7 @@ package com.example.dayscheduler.data.db.entity.task
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleEntity
 import com.example.dayscheduler.domain.model.TaskModel
@@ -17,7 +18,13 @@ import com.example.dayscheduler.domain.model.TaskModel
             parentColumns = ["id"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [
+        Index(
+            value = ["scheduleId"],
+            unique = true
+        )
+              ]
 )
 data class TaskScheduleEntity(
     @PrimaryKey(autoGenerate = true)
