@@ -18,20 +18,15 @@ import com.example.dayscheduler.domain.model.TaskModel
             parentColumns = ["id"],
             onDelete = ForeignKey.CASCADE
         )
-    ],
-    indices = [
-        Index(
-            value = ["scheduleId"],
-            unique = true
-        )
-              ]
+    ]
 )
 data class TaskScheduleEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
+    val taskId: Int,
     val scheduleId: Int
 ) {
     constructor(taskModel: TaskModel, scheduleId: Int) : this (
-            id = taskModel.id, scheduleId = scheduleId
+            id = 0, taskId = taskModel.id, scheduleId = scheduleId
             )
 }
