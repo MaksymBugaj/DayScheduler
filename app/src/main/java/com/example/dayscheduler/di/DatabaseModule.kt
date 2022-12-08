@@ -6,6 +6,7 @@ import com.example.dayscheduler.data.db.Database
 import com.example.dayscheduler.data.db.dao.ScheduleDao
 import com.example.dayscheduler.data.db.dao.ScheduleDateDao
 import com.example.dayscheduler.data.db.dao.TaskDao
+import com.example.dayscheduler.data.db.dao.TaskScheduleDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +32,10 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideTaskDao(database: Database): TaskDao = database.taskDao()
+
+    @Singleton
+    @Provides
+    fun provideTaskScheduleDao(database: Database): TaskScheduleDao = database.taskScheduleDao()
 
     @Singleton
     @Provides

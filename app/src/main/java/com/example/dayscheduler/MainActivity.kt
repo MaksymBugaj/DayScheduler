@@ -5,26 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.dayscheduler.navigation.Navigation
@@ -76,7 +63,7 @@ fun BottomNavigation(navController: NavController) {
             BottomNavigationItem(
                 icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
                 label = { Text(text = item.title,
-                    fontSize = 9.sp) },
+                    fontSize = 10.sp) },
                 selectedContentColor = Color.Black,
                 unselectedContentColor = Color.Black.copy(0.4f),
                 alwaysShowLabel = true,
@@ -97,3 +84,44 @@ fun BottomNavigation(navController: NavController) {
         }
     }
 }
+/**
+ * Create schedule powinien:
+ * wyświetlić dodatkowy ekran
+ * pozwolić userowi wybrać dni w które chce żeby dostał przypomnienie
+ * pozwolić userowi wybrać godziny przypomnień
+ */
+
+
+/**
+ * quick roadmap to achieve and technologys to do:
+ * tworzenie schedulera
+ * notifications ala alarm implement
+ * ustalenie kiedy zakonczu sie schedule na dany dzien -> tzn powiadomienie o koncu dnia
+ * start schedula na dany dzien |
+ * wyswietlanie taskow do ukonczenia w danym dniu i timera do konca |
+ * gdy dojdzie do konca dnia, należy wyświetlić powiadomienie o końcu dnia i
+ * po kliknieciu w nie, przekierowac usera do taskow do zakonczenia i dac mu mozliwosc zakonczenia dnia |
+ * po zakonczeniu dnia, nalezy odznaczyc taski jako zakonczone i wyswietlic procentowo ile sie udalo ukonczyc |
+ *
+ *
+ *
+ */
+
+/** teknology
+ * coroutines -> proponuje pobawic sie jobami by lepiej zrozumiec co i jak smiga
+ * work manager
+ * notifications
+ * jetpack compose
+ * github ci/cd with releases
+ * ci/cd to play store
+ */
+
+/**
+ * cel powyzszych to koniec 22 pazdziernika
+ * wstepnie proponuje 5h (8->9:15| 10->12| 15-> 16:45?)
+ */
+
+/**
+ * aktualnie jest 6.12
+ * create schedule został wstępnie osiągnięty
+ */

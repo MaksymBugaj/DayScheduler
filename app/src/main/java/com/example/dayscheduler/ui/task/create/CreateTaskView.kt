@@ -17,13 +17,22 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CreateTaskView(
-    viewModel: CreateTaskViewModel
+    viewModel: CreateTaskViewModel,
+    onSaveReady: () -> Unit
 ) {
     val taskName by viewModel.newTaskName.observeAsState("")
     val additionalInfo by viewModel.newTaskNAdditionalInfo.observeAsState(initial = "")
+    val savePossible by viewModel.savePossible.observeAsState(initial = false)
+
+    if(savePossible) {
+        viewModel.setSavePossible(false)
+        onSaveReady()
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Card(elevation = 2.dp, modifier = Modifier.padding(8.dp).fillMaxSize()) {
+        Card(elevation = 2.dp, modifier = Modifier
+            .padding(8.dp)
+            .fillMaxSize()) {
             Column (horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
                 OutlinedTextField(value = taskName, onValueChange = {
                     viewModel.setNewTaskName(it)
