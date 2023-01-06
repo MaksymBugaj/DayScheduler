@@ -21,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.dayscheduler.ui.util.TAG
+import dagger.internal.DoubleCheck.lazy
+import org.w3c.dom.Text
 
 @Composable
 fun CreateScheduleView (
@@ -51,7 +53,7 @@ fun CreateScheduleView (
 //    }
 
     Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
-        FloatingActionButtonCreateSchedule(
+        FloatingActionButtonAdd(
         onAddClick = {
             Log.d(TAG.commonTag,"onAddClick")
             showConfirmDialog.value = true
@@ -128,7 +130,7 @@ fun CreateSchedule(tasks: List<TaskItem>, viewModel: CreateScheduleViewModel) {
 }
 
 @Composable
-fun FloatingActionButtonCreateSchedule(
+fun FloatingActionButtonAdd(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

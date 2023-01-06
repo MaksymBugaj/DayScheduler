@@ -1,0 +1,7 @@
+#Thu Dec 15 11:47:26 CET 2022
+base.1=/Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/build/intermediates/dex/debug/mergeProjectDexDebug/6/classes.dex
+path.1=6/classes.dex
+base.0=/Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+path.0=0/classes.dex

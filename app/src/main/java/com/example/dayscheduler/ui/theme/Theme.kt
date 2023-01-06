@@ -5,6 +5,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,
@@ -27,6 +30,16 @@ private val LightColorPalette = lightColors(
     */
 )
 
+val scheduleLightColorPalete = SchedulerColors(
+    defaultFont = Color.Black
+)
+
+val scheduleDarkColorPalete = SchedulerColors(
+    defaultFont = Color.White
+)
+
+val localColors = staticCompositionLocalOf { scheduleLightColorPalete }
+
 @Composable
 fun DaySchedulerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
@@ -42,3 +55,13 @@ fun DaySchedulerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
         content = content
     )
 }
+
+val MaterialTheme.schedulerColors: SchedulerColors
+    @Composable
+    @ReadOnlyComposable
+    get() = localColors.current
+
+
+data class SchedulerColors(
+    val defaultFont: Color,
+)

@@ -125,3 +125,20 @@ fun BottomNavigation(navController: NavController) {
  * aktualnie jest 6.12
  * create schedule został wstępnie osiągnięty
  */
+
+/**
+ * aktualnie jest 19.12
+ * zmiana założeń na zrobienie prostego day schedulera na każdy dzień
+ * dosłownie wchodzisz, dodajesz taski na dzień dzisiejszy (tworzysz albo dodajesz taski z poprzednich dni)
+ * i każdy ma checkboxa czy został ukończony
+ *
+ */
+
+/**
+ * update 6.01.2023
+ * kopia alka app
+ *
+ * -> current : no tasks for today. Click and select tasks you would like to see for today -> navigates to add
+ * _. add zostaje niezmienione, aczkolwiek kliknięcie plus tworzy new schedule
+ * który jest wyświetlany na current
+ */

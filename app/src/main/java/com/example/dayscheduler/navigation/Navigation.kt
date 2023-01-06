@@ -20,7 +20,11 @@ import com.example.dayscheduler.ui.task.create.CreateTaskViewModel
 fun Navigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = BottomNavItem.Current.screen_route) {
         composable(route = BottomNavItem.Current.screen_route) {
-            CurrentScheduleView()
+            CurrentScheduleView(
+                onAddTasksClick = {
+                    navController.navigate(BottomNavItem.CreateSchedule.screen_route)
+                }
+            )
         }
         composable(route = BottomNavItem.AllSchedules.screen_route) {
             AllSchedulesView()
