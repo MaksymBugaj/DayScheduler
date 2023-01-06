@@ -7,13 +7,13 @@ import androidx.room.Update
 
 interface BaseDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(entity: T)
+    suspend fun insert(entity: T)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg entity: T)
+    suspend fun insert(vararg entity: T)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(entities: List<T>)
+    suspend fun insert(entities: List<T>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertReturnId(entity: T): Long

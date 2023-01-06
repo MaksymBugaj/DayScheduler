@@ -2,10 +2,12 @@ package com.example.dayscheduler.domain.repository
 
 import com.example.dayscheduler.data.db.dao.ScheduleDao
 import com.example.dayscheduler.data.db.dao.ScheduleDateDao
+import com.example.dayscheduler.data.db.dao.TaskDao
 import com.example.dayscheduler.data.db.dao.TaskScheduleDao
 import com.example.dayscheduler.data.db.entity.ScheduleFull
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleDateEntity
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleEntity
+import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import com.example.dayscheduler.data.db.entity.task.TaskScheduleEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +18,8 @@ class ScheduleRepository @Inject constructor(
     private val scheduleDao: ScheduleDao,
     private val scheduleDateDao: ScheduleDateDao,
     //to be moved
-    private val taskScheduleDao: TaskScheduleDao
+    private val taskScheduleDao: TaskScheduleDao,
+    private val taskDao: TaskDao,
 ) {
     suspend fun saveScheduleDate(scheduleDate: ScheduleDateEntity) {
         withContext(Dispatchers.IO) {
@@ -27,6 +30,13 @@ class ScheduleRepository @Inject constructor(
     suspend fun getAllSchedules(): Flow<List<ScheduleFull>>{
         return withContext(Dispatchers.IO) {
             scheduleDao.getScheduleFull()
+        }
+    }
+
+    suspend fun getLastSchedule(): List<TaskEntity> {
+        return withContext(Dispatchers.IO) {
+            val lastSchedule = scheduleDao.getLastSchedule()
+            return@withContext taskDao.getAllTasksWithId(lastSchedule.first().tasks.map { it.taskId })
         }
     }
 
