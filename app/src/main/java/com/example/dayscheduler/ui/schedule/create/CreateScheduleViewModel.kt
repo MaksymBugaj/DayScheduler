@@ -18,8 +18,10 @@ import com.example.dayscheduler.domain.model.TaskModel
 import com.example.dayscheduler.domain.model.toTaskEntity
 import com.example.dayscheduler.ui.util.TAG
 import com.example.dayscheduler.util.livedata.EmptySingleLiveEvent
+import com.example.dayscheduler.util.livedata.SafeLiveData
 import com.example.dayscheduler.util.livedata.SafeMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -55,6 +57,9 @@ class CreateScheduleViewModel @Inject constructor(
     private val _scheduleGoal = MutableLiveData("")
     val scheduleGoal: LiveData<String> = _scheduleGoal
 
+    private val _scheduleSaved = SafeMutableLiveData<Boolean>(false)
+    val scheduleSaved: SafeLiveData<Boolean> = _scheduleSaved
+
     init {
         viewModelScope.launch {
             scheduleRepository.getAllSchedules().onEach {
@@ -71,6 +76,10 @@ class CreateScheduleViewModel @Inject constructor(
                 })
             }.launchIn(this)
         }
+    }
+
+    fun setScheduleSaved(value: Boolean) {
+        _scheduleSaved.value = value
     }
 
     fun setScheduleName(value: String){
@@ -105,9 +114,9 @@ class CreateScheduleViewModel @Inject constructor(
     fun save(){
         if(
             _selectedTasks.value.isNotEmpty()
-            && days.isNotEmpty()
-            && !_scheduleName.value.isNullOrEmpty()
-            && !_scheduleGoal.value.isNullOrEmpty()
+//            && days.isNotEmpty()
+//            && !_scheduleName.value.isNullOrEmpty()
+//            && !_scheduleGoal.value.isNullOrEmpty()
         ) {
             val schedule = ScheduleEntity(
                 0, _scheduleName.value!!, _scheduleGoal.value!!, ZonedDateTime.now()
@@ -119,7 +128,7 @@ class CreateScheduleViewModel @Inject constructor(
                 }
                 Log.d(TAG.commonTag,"tasks: $tasks")
                 scheduleRepository.saveTaskScheduleWithCorrespondingId(tasks)
-
+                _scheduleSaved.postValue(value = true)
             }
 
         }

@@ -1,5 +1,7 @@
 package com.example.dayscheduler.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -16,11 +18,17 @@ import com.example.dayscheduler.ui.settings.SettingsView
 import com.example.dayscheduler.ui.task.create.CreateTaskView
 import com.example.dayscheduler.ui.task.create.CreateTaskViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = BottomNavItem.Current.screen_route) {
         composable(route = BottomNavItem.Current.screen_route) {
-            CurrentScheduleView()
+            CurrentScheduleView(
+                viewModel = hiltViewModel(),
+                onAddTasksClick = {
+                    navController.navigate(BottomNavItem.CreateSchedule.screen_route)
+                }
+            )
         }
         composable(route = BottomNavItem.AllSchedules.screen_route) {
             AllSchedulesView()
@@ -30,9 +38,14 @@ fun Navigation(navController: NavHostController) {
         }
         composable(route = BottomNavItem.CreateSchedule.screen_route) {
             val viewModel = hiltViewModel<CreateScheduleViewModel>()
-            CreateScheduleView(onCreateTaskClick = {
-                navController.navigate(NavItem.CreateTask.screen_route)
-            }, viewModel = viewModel)
+            CreateScheduleView(
+                onCreateTaskClick = {
+                    navController.navigate(NavItem.CreateTask.screen_route)
+                },
+                viewModel = viewModel,
+                tasksSaved = {
+                    navController.navigate(BottomNavItem.Current.screen_route)
+                })
         }
         composable(route = NavItem.CreateTask.screen_route){
             val viewModel = hiltViewModel<CreateTaskViewModel>()

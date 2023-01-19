@@ -1,6 +1,8 @@
 package com.example.dayscheduler.ui.schedule.create
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,16 +22,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import com.example.dayscheduler.ui.util.TAG
+import dagger.internal.DoubleCheck.lazy
+import org.w3c.dom.Text
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CreateScheduleView (
     viewModel: CreateScheduleViewModel,
-    onCreateTaskClick: () -> Unit
+    onCreateTaskClick: () -> Unit,
+    tasksSaved: () -> Unit
 ){
     val tasks by viewModel.tasks.observeAsState(initial = emptyList())
     val selectedTasks by viewModel.selectedTasks.observeAsState(initial = emptyList())
     val showCreateSchedule by viewModel.createScheduleClicked.observeAsState()
+    val onSaveReady by viewModel.scheduleSaved.observeAsState(initial = false)
+    if (onSaveReady) {
+        viewModel.setScheduleSaved(false)
+        tasksSaved()
+    }
     val showConfirmDialog = remember {
         mutableStateOf(false)
     }
@@ -51,10 +63,11 @@ fun CreateScheduleView (
 //    }
 
     Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
-        FloatingActionButtonCreateSchedule(
+        FloatingActionButtonAdd(
         onAddClick = {
             Log.d(TAG.commonTag,"onAddClick")
-            showConfirmDialog.value = true
+            //showConfirmDialog.value = true
+            viewModel.save()
             fabAlpha.value = 0f
         }, modifier = Modifier.alpha(fabAlpha.value))
     }
@@ -128,7 +141,7 @@ fun CreateSchedule(tasks: List<TaskItem>, viewModel: CreateScheduleViewModel) {
 }
 
 @Composable
-fun FloatingActionButtonCreateSchedule(
+fun FloatingActionButtonAdd(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -187,5 +200,9 @@ data class TaskItem(
     fun toggle() {
         isSelected.value = !isSelected.value
     }
+
+    constructor(taskEntity: TaskEntity): this (
+        id = taskEntity.id, name = taskEntity.name, additionalInfo = taskEntity.additionalInfo, isSelected = mutableStateOf(false)
+            )
 }
 

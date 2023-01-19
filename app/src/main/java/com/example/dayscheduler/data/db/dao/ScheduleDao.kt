@@ -16,4 +16,8 @@ interface ScheduleDao : BaseDao<ScheduleEntity> {
         "select * from schedules"
     )
     fun getScheduleFull(): Flow<List<ScheduleFull>>
+
+    @Transaction
+    @Query("select * from schedules s order by s.created desc limit 1")
+    suspend fun getLastSchedule(): List<ScheduleFull>
 }

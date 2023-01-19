@@ -12,5 +12,5 @@ data class ScheduleEntity(
     val id: Int,
     val name: String,
     val goal: String,
-    val created: ZonedDateTime,
+    val created: ZonedDateTime
 )

@@ -1,0 +1,87 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+	package
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+	xmlns:dist
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:3:5-61
+	android:versionCode
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:1-32:12
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:2:11-69
+dist:module
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:5:5-12:19
+	dist:instant
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:6:9-29
+	dist:title
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:7:9-44
+dist:delivery
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:8:9-10:25
+dist:install-time
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:9:13-34
+dist:fusing
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:11:9-44
+	dist:include
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:11:22-41
+application
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:14:5-31:19
+activity#.ScheduleActivity
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:15:9-30:20
+	android:exported
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:17:13-36
+	android:name
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:16:13-45
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:com.example.schedule+data:scheme:app
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:19:13-28:29
+action#android.intent.action.VIEW
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:20:17-69
+	android:name
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:20:25-66
+category#android.intent.category.DEFAULT
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:22:17-76
+	android:name
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:22:27-73
+category#android.intent.category.BROWSABLE
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:23:17-78
+	android:name
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:23:27-75
+data
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:25:17-27:44
+	android:host
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:26:21-56
+	android:scheme
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:27:21-41
+uses-sdk
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+		INJECTED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml
+activity#com.example.dayscheduler.ScheduleActivity
+ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:15:9-30:20
+	android:exported
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:17:13-36
+	android:name
+		ADDED from /Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/AndroidManifest.xml:16:13-45

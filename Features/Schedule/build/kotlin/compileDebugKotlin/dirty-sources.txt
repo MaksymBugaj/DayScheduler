@@ -1,0 +1,2 @@
+/Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/java/com/example/schedule/ScheduleActivity.kt
+/Users/maksym.bugaj/AndroidStudioProjects/DayScheduler/Schedule/src/main/java/com/example/schedule/TestView.kt

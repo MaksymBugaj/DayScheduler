@@ -15,14 +15,14 @@ data class ScheduleFull(
     @Relation(
         parentColumn = "id",
         entityColumn = "scheduleId",
-        entity = ScheduleDateEntity::class
+        entity = TaskScheduleEntity::class
     )
-    val scheduleDates: List<ScheduleDateEntity>,
+    val tasks: List<TaskScheduleEntity>,
     @Relation(
         parentColumn = "id",
         entityColumn = "scheduleId",
-        entity = TaskScheduleEntity::class
+        entity = ScheduleDateEntity::class
     )
-    val tasks: List<TaskScheduleEntity>
+    val scheduleDates: List<ScheduleDateEntity>
 
 )
