@@ -21,7 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import com.example.dayscheduler.data.db.entity.task.TaskEntity
-import com.example.dayscheduler.data.db.entity.task.TaskScheduleEntity
+import com.example.dayscheduler.domain.model.TaskModel
 import com.example.dayscheduler.ui.schedule.create.TaskItem
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -47,15 +47,14 @@ fun CurrentScheduleView(
             }
         } else {
             items(tasks) { item ->
-                TaskRow(item)
+                TaskRow(TaskItem(item))
             }
         }
     }
 }
 
 @Composable
-fun TaskRow(taskEntity: TaskEntity) {
-    val task = TaskItem(taskEntity)
+fun TaskRow(task: TaskItem) {
     var backgroundColor by remember {
         mutableStateOf(Color.White)
     }
@@ -63,11 +62,11 @@ fun TaskRow(taskEntity: TaskEntity) {
         .padding(8.dp)
         .selectable(selected = task.isSelected.value, onClick = {
             task.toggle()
-            if (task.isSelected.value) {
-                //createScheduleViewModel.addSelectedTask(task)
-            } else {
-                //createScheduleViewModel.removeSelectedTask(task)
-            }
+//            if (task.isSelected.value) {
+//                createScheduleViewModel.addSelectedTask(task)
+//            } else {
+//                createScheduleViewModel.removeSelectedTask(task)
+//            }
             backgroundColor = if (task.isSelected.value) {
                 Color.Cyan
             } else Color.White

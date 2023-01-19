@@ -7,6 +7,7 @@ import com.example.dayscheduler.data.db.dao.ScheduleDao
 import com.example.dayscheduler.data.db.dao.ScheduleDateDao
 import com.example.dayscheduler.data.db.dao.TaskDao
 import com.example.dayscheduler.data.db.dao.TaskScheduleDao
+import com.example.dayscheduler.data.db.migrations.RoomMigration3To4
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +26,7 @@ class DatabaseModule {
             context,
             Database::class.java,
             "db"
-        )
+        ).addMigrations(RoomMigration3To4())
             .fallbackToDestructiveMigration()
             .build()
 

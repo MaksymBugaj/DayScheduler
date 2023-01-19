@@ -8,6 +8,7 @@ import com.example.dayscheduler.data.db.dao.ScheduleDao
 import com.example.dayscheduler.data.db.dao.ScheduleDateDao
 import com.example.dayscheduler.data.db.dao.TaskDao
 import com.example.dayscheduler.data.db.dao.TaskScheduleDao
+import com.example.dayscheduler.data.db.entity.MigrationTestEntity
 import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleDateEntity
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleEntity
@@ -18,9 +19,10 @@ import com.example.dayscheduler.data.db.entity.task.TaskScheduleEntity
         TaskEntity::class,
         ScheduleEntity::class,
         ScheduleDateEntity::class,
-        TaskScheduleEntity::class
+        TaskScheduleEntity::class,
+        MigrationTestEntity::class
     ],
-    version = 3
+    version = 4
 )
 @TypeConverters(
     ZonedDateTimeConverter::class
