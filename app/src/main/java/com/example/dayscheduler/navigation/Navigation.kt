@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.dayscheduler.BottomNavItem
 import com.example.dayscheduler.NavItem
+import com.example.dayscheduler.ui.schedule.completed.CompletedTaskView
 import com.example.dayscheduler.ui.schedule.create.ConfirmScheduleView
 import com.example.dayscheduler.ui.schedule.create.CreateScheduleView
 import com.example.dayscheduler.ui.schedule.create.CreateScheduleViewModel
@@ -31,7 +32,7 @@ fun Navigation(navController: NavHostController) {
             )
         }
         composable(route = BottomNavItem.AllSchedules.screen_route) {
-            AllSchedulesView()
+            CompletedTaskView()
         }
         composable(route = BottomNavItem.Settings.screen_route) {
             SettingsView()

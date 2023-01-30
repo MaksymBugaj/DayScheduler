@@ -20,6 +20,14 @@ class TaskRepository @Inject constructor(
         }
     }
 
+    suspend fun getAllTasksWithoutSchedule(ids: List<Int>) : List<TaskModel> {
+        return withContext(Dispatchers.IO) {
+            taskDao.getAllTasksWithoutSchedule(ids).map { taskEntity ->
+                taskMapper.mapFromData(taskEntity)
+            }
+        }
+    }
+
     suspend fun getAllTasks(): Flow<List<TaskModel>> {
         return withContext(Dispatchers.IO) {
             taskDao.getAllTasks().map { it.map { taskEntity -> taskMapper.mapFromData(taskEntity) } }

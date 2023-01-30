@@ -33,7 +33,7 @@ class CreateTaskViewModel @Inject constructor(
 
     fun save(){
         viewModelScope.launch {
-            taskRepository.saveTask(TaskModel(id = 0, name = _newTaskName.value, additionalInfo = _newTaskAdditionalInfo.value))
+            taskRepository.saveTask(TaskModel(id = 0, name = _newTaskName.value, additionalInfo = _newTaskAdditionalInfo.value, isActive = true))
             _savePossible.postValue(true)
         }
     }

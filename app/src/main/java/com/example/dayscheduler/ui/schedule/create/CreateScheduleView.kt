@@ -1,8 +1,6 @@
 package com.example.dayscheduler.ui.schedule.create
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,15 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import com.example.dayscheduler.ui.util.TAG
-import dagger.internal.DoubleCheck.lazy
-import org.w3c.dom.Text
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CreateScheduleView (
     viewModel: CreateScheduleViewModel,
@@ -38,6 +34,7 @@ fun CreateScheduleView (
     val selectedTasks by viewModel.selectedTasks.observeAsState(initial = emptyList())
     val showCreateSchedule by viewModel.createScheduleClicked.observeAsState()
     val onSaveReady by viewModel.scheduleSaved.observeAsState(initial = false)
+
     if (onSaveReady) {
         viewModel.setScheduleSaved(false)
         tasksSaved()
@@ -63,8 +60,8 @@ fun CreateScheduleView (
 //    }
 
     Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
-        FloatingActionButtonAdd(
-        onAddClick = {
+        FloatingActionButtonComplete(
+        onClick = {
             Log.d(TAG.commonTag,"onAddClick")
             //showConfirmDialog.value = true
             viewModel.save()
@@ -73,15 +70,17 @@ fun CreateScheduleView (
     }
     ) { paddingValues ->
         if(showConfirmDialog.value) {
-            Log.d(TAG.commonTag," show Confirm dialog")
+            Log.d(TAG.commonTag,"show Confirm dialog")
             ConfirmScheduleView(viewModel = viewModel)
         } else {
             Column(modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 8.dp,
+                .padding(
+                    top = 8.dp,
                     end = 8.dp,
                     start = 8.dp,
-                    bottom = paddingValues.calculateBottomPadding()),
+                    bottom = paddingValues.calculateBottomPadding()
+                ),
                 horizontalAlignment = Alignment.CenterHorizontally) {
                 if (tasks.isEmpty()) {
                     ShowCreateTaskView(onCreateTaskClick)
@@ -141,12 +140,14 @@ fun CreateSchedule(tasks: List<TaskItem>, viewModel: CreateScheduleViewModel) {
 }
 
 @Composable
-fun FloatingActionButtonAdd(
-    onAddClick: () -> Unit,
-    modifier: Modifier = Modifier
+fun FloatingActionButtonComplete(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    icon: ImageVector = Icons.Filled.Add,
+
 ) {
-    FloatingActionButton(onClick = { onAddClick() }, backgroundColor = Color.Black, contentColor = Color.Magenta, modifier = modifier) {
-        Icon(Icons.Filled.Add, "")
+    FloatingActionButton(onClick = { onClick() }, backgroundColor = Color.Black, contentColor = Color.Magenta, modifier = modifier) {
+        Icon(icon, "")
     }
 }
 
@@ -195,14 +196,15 @@ data class TaskItem(
     val id: Int,
     val name: String,
     val additionalInfo: String?,
-    var isSelected: MutableState<Boolean>
+    var isSelected: MutableState<Boolean>,
+    val isActive: Boolean
 ) {
     fun toggle() {
         isSelected.value = !isSelected.value
     }
 
     constructor(taskEntity: TaskEntity): this (
-        id = taskEntity.id, name = taskEntity.name, additionalInfo = taskEntity.additionalInfo, isSelected = mutableStateOf(false)
+        id = taskEntity.id, name = taskEntity.name, additionalInfo = taskEntity.additionalInfo, isSelected = mutableStateOf(false), isActive = true
             )
 }
 

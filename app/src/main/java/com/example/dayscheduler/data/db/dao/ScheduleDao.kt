@@ -18,6 +18,12 @@ interface ScheduleDao : BaseDao<ScheduleEntity> {
     fun getScheduleFull(): Flow<List<ScheduleFull>>
 
     @Transaction
+    @Query(
+        "select * from schedules s where s.finished = 0"
+    )
+    suspend fun getCurrentScheduleFull(): ScheduleFull?
+
+    @Transaction
     @Query("select * from schedules s order by s.created desc limit 1")
     suspend fun getLastSchedule(): List<ScheduleFull>
 }

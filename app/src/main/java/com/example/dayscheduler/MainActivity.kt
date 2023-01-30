@@ -142,3 +142,27 @@ fun BottomNavigation(navController: NavController) {
  * _. add zostaje niezmienione, aczkolwiek kliknięcie plus tworzy new schedule
  * który jest wyświetlany na current
  */
+
+/**
+ * update 19.01.2023
+ *
+ * current task dostaje flage active/finished
+ * current schedule ma mieć flagę że jest aktywny, wtedy jeśli jakieś zadanie dodajemy, to dodajemy do aktywnego schedula
+ * taski do dodania powinny być filtrowane w taki sposób, by nie można było dodać już aktywnego zadania
+ *
+ * problem is:
+ * currentschedule view powinien aktualnie posiadać model z flagą is active, co powinno byc aktualizowane w bazie
+ *
+ * update 23.01
+ * no to trzeba zmienić nazwę na procrastinating finisher
+ * nastepnie dodac cele na dzis
+ * do godzin
+ * tabelke z karami
+ * i z wygranymi
+ *
+ *
+ * update 26
+ *
+ * taskschedule entity
+ * if current tasks list is empty && schedule.tasks.isNotEmpty then show button with finish schedule
+ */

@@ -24,9 +24,10 @@ data class TaskScheduleEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val taskId: Int,
-    val scheduleId: Int
+    val scheduleId: Int,
+    val isActive: Boolean
 ) {
-    constructor(taskModel: TaskModel, scheduleId: Int) : this (
-            id = 0, taskId = taskModel.id, scheduleId = scheduleId
+    constructor(taskModel: TaskModel, scheduleId: Int, taskId: Int = 0) : this (
+            id = taskId, taskId = taskModel.id, scheduleId = scheduleId, isActive = taskModel.isActive
             )
 }

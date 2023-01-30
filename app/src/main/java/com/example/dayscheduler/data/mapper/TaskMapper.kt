@@ -17,6 +17,7 @@ class TaskMapper @Inject constructor() : BaseDataMapper<TaskEntity, TaskModel>{
         TaskModel(
             id = dataModel.id,
             name = dataModel.name,
-            additionalInfo = dataModel.additionalInfo
+            additionalInfo = dataModel.additionalInfo,
+            isActive = true
         )
 }

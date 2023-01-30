@@ -1,8 +1,6 @@
 package com.example.dayscheduler.ui.schedule.create
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,18 +8,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dayscheduler.data.db.entity.ScheduleFull
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleEntity
-import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import com.example.dayscheduler.data.db.entity.task.TaskScheduleEntity
 import com.example.dayscheduler.domain.repository.ScheduleRepository
 import com.example.dayscheduler.domain.repository.TaskRepository
 import com.example.dayscheduler.domain.model.TaskModel
-import com.example.dayscheduler.domain.model.toTaskEntity
 import com.example.dayscheduler.ui.util.TAG
 import com.example.dayscheduler.util.livedata.EmptySingleLiveEvent
 import com.example.dayscheduler.util.livedata.SafeLiveData
 import com.example.dayscheduler.util.livedata.SafeMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -34,8 +29,8 @@ class CreateScheduleViewModel @Inject constructor(
     private val taskRepository: TaskRepository
 ) : ViewModel(){
 
-    private val _schedules = MutableLiveData<List<ScheduleFull>>()
-    val schedules : LiveData<List<ScheduleFull>> = _schedules
+    private val _currentSchedule = MutableLiveData<ScheduleFull>()
+    val schedule : LiveData<ScheduleFull> = _currentSchedule
 
     private val _tasks = MutableLiveData<List<TaskItem>>()
     val tasks : LiveData<List<TaskItem>> = _tasks
@@ -62,16 +57,27 @@ class CreateScheduleViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            scheduleRepository.getAllSchedules().onEach {
-                _schedules.postValue(it)
-            }.launchIn(this)
-            taskRepository.getAllTasks().onEach { item ->
+            scheduleRepository.getCurrentSchedule()?.let {
+                _currentSchedule.postValue(it)
+                taskRepository.getAllTasksWithoutSchedule(it.tasks.map { it.taskId }).let { tasks ->
+                    _tasks.postValue(tasks.map { taskModel ->
+                        TaskItem(
+                            id = taskModel.id,
+                            name = taskModel.name,
+                            additionalInfo = taskModel.additionalInfo,
+                            isSelected = mutableStateOf(false),
+                            isActive = true
+                        )
+                    })
+                }
+            } ?: taskRepository.getAllTasks().onEach { item ->
                 _tasks.postValue(item.map {
                     TaskItem(
                         id = it.id,
                         name = it.name,
                         additionalInfo = it.additionalInfo,
-                        isSelected = mutableStateOf(false)
+                        isSelected = mutableStateOf(false),
+                        isActive = true
                     )
                 })
             }.launchIn(this)
@@ -110,7 +116,6 @@ class CreateScheduleViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun save(){
         if(
             _selectedTasks.value.isNotEmpty()
@@ -118,16 +123,22 @@ class CreateScheduleViewModel @Inject constructor(
 //            && !_scheduleName.value.isNullOrEmpty()
 //            && !_scheduleGoal.value.isNullOrEmpty()
         ) {
-            val schedule = ScheduleEntity(
-                0, _scheduleName.value!!, _scheduleGoal.value!!, ZonedDateTime.now()
+            val schedule =if(_currentSchedule.value?.schedule!= null) _currentSchedule.value!!.schedule else ScheduleEntity(
+                0, _scheduleName.value!!, _scheduleGoal.value!!, ZonedDateTime.now(), false
             )
             viewModelScope.launch {
                 val scheduleId = scheduleRepository.createSchedule(schedule)
                 val tasks = _selectedTasks.value.map {
-                    TaskScheduleEntity(it, scheduleId.toInt())
+                    TaskScheduleEntity(
+                        it,
+                        scheduleId.toInt()
+                    )
                 }
+                val roomTasks =if(_currentSchedule.value?.tasks?.isNotEmpty() == true) _currentSchedule.value!!.tasks else emptyList<TaskScheduleEntity>()
                 Log.d(TAG.commonTag,"tasks: $tasks")
-                scheduleRepository.saveTaskScheduleWithCorrespondingId(tasks)
+                val tasksToInsert : List<TaskScheduleEntity> =
+                    tasks + roomTasks
+                scheduleRepository.saveTaskScheduleWithCorrespondingId(tasksToInsert)
                 _scheduleSaved.postValue(value = true)
             }
 
