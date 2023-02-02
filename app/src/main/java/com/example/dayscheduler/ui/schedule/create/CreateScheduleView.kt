@@ -200,7 +200,9 @@ data class TaskItem(
     val isActive: Boolean
 ) {
     fun toggle() {
+        Log.d(TAG.commonTag," toogle: ${isSelected.value}")
         isSelected.value = !isSelected.value
+        Log.d(TAG.commonTag," toogled: ${isSelected.value}")
     }
 
     constructor(taskEntity: TaskEntity): this (

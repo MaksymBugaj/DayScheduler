@@ -12,7 +12,7 @@ interface TaskDao : BaseDao<TaskEntity> {
     fun getAllTasks(): Flow<List<TaskEntity>>
 
     @Query("select * from tasks where tasks.id not in(:ids)")
-    suspend fun getAllTasksWithoutSchedule(ids: List<Int>): List<TaskEntity>
+    fun getAllTasksWithoutSchedule(ids: List<Int>): Flow<List<TaskEntity>>
 
     @Query("select * from tasks order by tasks.id desc limit 1")
     suspend fun getLastTask(): TaskEntity

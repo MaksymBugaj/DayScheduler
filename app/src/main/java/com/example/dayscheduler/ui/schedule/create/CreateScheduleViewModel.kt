@@ -59,7 +59,10 @@ class CreateScheduleViewModel @Inject constructor(
         viewModelScope.launch {
             scheduleRepository.getCurrentSchedule()?.let {
                 _currentSchedule.postValue(it)
-                taskRepository.getAllTasksWithoutSchedule(it.tasks.map { it.taskId }).let { tasks ->
+                taskRepository.getAllTasksWithoutSchedule(it.tasks.map {
+                    Log.d(TAG.commonTag, " task id: ${ it.taskId }")
+                    it.taskId }).onEach { tasks ->
+                    Log.d(TAG.commonTag, "current tasks: $tasks")
                     _tasks.postValue(tasks.map { taskModel ->
                         TaskItem(
                             id = taskModel.id,
@@ -69,7 +72,7 @@ class CreateScheduleViewModel @Inject constructor(
                             isActive = true
                         )
                     })
-                }
+                }.launchIn(this)
             } ?: taskRepository.getAllTasks().onEach { item ->
                 _tasks.postValue(item.map {
                     TaskItem(

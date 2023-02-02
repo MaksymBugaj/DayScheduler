@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -23,10 +24,63 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.example.dayscheduler.ui.schedule.create.TaskItem
+import com.example.dayscheduler.ui.schedule.current.CurrentScheduleViewModel
 import kotlinx.coroutines.delay
 
+
 @Composable
-fun CompletedTaskView() {
+fun CompletedTaskView(viewModel: CompletedTaskViewModel) {
+    val finishedTasks by viewModel.completedTasks.observeAsState(initial = emptyList())
+    LazyColumn() {
+        items(finishedTasks){ item ->
+            TaskRow(task = TaskItem(item), viewModel = viewModel)
+        }
+    }
+}
+
+@Composable
+fun TaskRow(task: TaskItem, viewModel: CompletedTaskViewModel) {
+    var backgroundColor by remember {
+        mutableStateOf(Color.White)
+    }
+    Card(elevation = 4.dp, modifier = Modifier
+        .padding(8.dp)
+        .selectable(selected = task.isSelected.value, onClick = {
+            task.toggle()
+//            if (task.isSelected.value) {
+//                viewModel.addSelectedTask(task)
+//            } else {
+//                viewModel.removeSelectedTask(task)
+//            }
+            backgroundColor = if (task.isSelected.value) {
+                Color.Cyan
+            } else Color.White
+        })
+
+    ) {
+        Column (modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(backgroundColor)
+            .padding(8.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start){
+            Text(text = task.name, fontWeight = FontWeight.Bold,
+                color = Color.Black,)
+            task.additionalInfo?.let {
+                Text(text = it, fontWeight = FontWeight.Bold,
+                    color = Color.Black,)
+            }
+
+        }
+
+    }
+}
+
+
+@Composable
+fun FinishedTasksView(viewModel: CompletedTaskViewModel) {
 
     val outward = "ACTIVE"
     val returnStatus = "PAST"
@@ -73,7 +127,7 @@ fun CompletedTaskView() {
                 item {
                     Text(text = "Active")
                 }
-                items(20) { item ->
+                items(20) {
                     ShimmerListItem(
                         isLoading = isLoading,
                     contentAfterLoading = {

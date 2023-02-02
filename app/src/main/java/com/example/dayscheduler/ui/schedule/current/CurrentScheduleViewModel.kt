@@ -1,11 +1,10 @@
 package com.example.dayscheduler.ui.schedule.current
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dayscheduler.data.db.entity.ScheduleFull
-import com.example.dayscheduler.data.db.entity.task.TaskEntity
 import com.example.dayscheduler.data.db.entity.task.TaskScheduleEntity
 import com.example.dayscheduler.domain.model.TaskModel
 import com.example.dayscheduler.domain.repository.ScheduleRepository
@@ -21,8 +20,8 @@ class CurrentScheduleViewModel @Inject constructor(
     private val scheduleRepository: ScheduleRepository
 ) : ViewModel() {
 
-    private val _tasks = SafeMutableLiveData<List<TaskEntity>>()
-    val tasks: SafeLiveData<List<TaskEntity>> get() = _tasks
+    private val _tasks = SafeMutableLiveData<List<TaskItem>>()
+    val tasks: SafeLiveData<List<TaskItem>> get() = _tasks
 
     private val _currentScheduleTasks = MutableLiveData<List<TaskScheduleEntity>>()
     val scheduleTasks : LiveData<List<TaskScheduleEntity>> = _currentScheduleTasks
@@ -32,6 +31,9 @@ class CurrentScheduleViewModel @Inject constructor(
 
     private val taskList = mutableListOf<TaskItem>()
 
+    private val _allTasksFinished = MutableLiveData(false)
+    val allTasksFinished: LiveData<Boolean> = _allTasksFinished
+
     init {
         updateInfo()
     }
@@ -40,9 +42,11 @@ class CurrentScheduleViewModel @Inject constructor(
     private fun updateInfo() {
         viewModelScope.launch {
             val schedule = scheduleRepository.getLastScheduleTasks()
-            _tasks.postValue(schedule.second)
+            _tasks.postValue(schedule.second.map { TaskItem(it) })
             _currentScheduleTasks.postValue(schedule.first)
             _selectedTasks.value = emptyList()
+            taskList.clear()
+            if(schedule.second.isEmpty() && schedule.first.isNotEmpty()) _allTasksFinished.postValue(true)
         }
     }
 
@@ -53,9 +57,7 @@ class CurrentScheduleViewModel @Inject constructor(
 
     fun removeSelectedTask(taskItem: TaskItem) {
         taskList.remove(taskItem)
-        _selectedTasks.value = taskList.map {
-            TaskModel(it)
-        }
+        _selectedTasks.value = taskList.map { TaskModel(it) }
     }
 
     fun markAsCompleted() {
@@ -70,6 +72,12 @@ class CurrentScheduleViewModel @Inject constructor(
                 scheduleRepository.markTaskAsCompleted(it.map { it.copy(isActive = false) })
                 updateInfo()
             }
+        }
+    }
+
+    fun completeSchedule() {
+        viewModelScope.launch {
+            scheduleRepository.markScheduleAsFinished()
         }
     }
 }
