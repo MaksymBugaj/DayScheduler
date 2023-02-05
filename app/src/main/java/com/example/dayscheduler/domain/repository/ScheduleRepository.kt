@@ -33,10 +33,17 @@ class ScheduleRepository @Inject constructor(
         }
     }
 
-    suspend fun getLastSchedule(): List<TaskEntity> {
+    suspend fun getCurrentSchedule(): ScheduleFull? {
         return withContext(Dispatchers.IO) {
-            val lastSchedule = scheduleDao.getLastSchedule()
-            return@withContext taskDao.getAllTasksWithId(lastSchedule.first().tasks.map { it.taskId })
+            return@withContext scheduleDao.getCurrentScheduleFull()
+        }
+    }
+
+    suspend fun getLastScheduleTasks(): Pair<List<TaskScheduleEntity>,List<TaskEntity>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext scheduleDao.getCurrentScheduleFull()?.let { schedule ->
+                Pair(schedule.tasks,taskDao.getAllTasksWithId(schedule.tasks.filter { it.isActive }.map { it.taskId }))
+            } ?: return@withContext Pair(emptyList(),emptyList())
         }
     }
 
@@ -48,9 +55,33 @@ class ScheduleRepository @Inject constructor(
 
     suspend fun saveTaskScheduleWithCorrespondingId(taskScheduleEntities: List<TaskScheduleEntity>) {
         withContext(Dispatchers.IO) {
-            taskScheduleDao.insert(taskScheduleEntities)
+            for(item in taskScheduleEntities) taskScheduleDao.insert(item)
         }
     }
+
+    suspend fun markTaskAsCompleted(taskScheduleEntity: List<TaskScheduleEntity>) {
+        withContext(Dispatchers.IO) {
+            taskScheduleDao.update(taskScheduleEntity)
+        }
+    }
+
+    suspend fun getFinishedTasksFromLastSchedule(): List<TaskEntity>{
+        getCurrentSchedule()?.let { scheduleFull ->
+            val finishedIds = taskScheduleDao.getAllFinishedTasksIds(scheduleFull.schedule.id)
+            if(finishedIds.isNotEmpty()) return taskDao.getAllTasksWithId(finishedIds)
+            else return emptyList()
+        } ?: return emptyList()
+    }
+
+    suspend fun markScheduleAsFinished() {
+        withContext(Dispatchers.IO){
+            getCurrentSchedule()?.let {
+                scheduleDao.markScheduleAsCompleted(it.schedule.copy(finished = true))
+            }
+
+        }
+    }
+
 
 
 }

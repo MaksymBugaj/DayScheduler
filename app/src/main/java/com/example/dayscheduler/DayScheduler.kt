@@ -10,3 +10,9 @@ class DayScheduler :Application(){
         super.onCreate()
     }
 }
+
+/**
+ * notes after development:
+ * if u map some elements in a view to another item, and it is in lazy column, view will be recomposed
+ *
+ * */

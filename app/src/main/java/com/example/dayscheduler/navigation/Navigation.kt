@@ -9,6 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.dayscheduler.BottomNavItem
 import com.example.dayscheduler.NavItem
+import com.example.dayscheduler.ui.schedule.completed.CompletedTaskView
+import com.example.dayscheduler.ui.schedule.completed.CompletedTaskViewModel
 import com.example.dayscheduler.ui.schedule.create.ConfirmScheduleView
 import com.example.dayscheduler.ui.schedule.create.CreateScheduleView
 import com.example.dayscheduler.ui.schedule.create.CreateScheduleViewModel
@@ -18,7 +20,6 @@ import com.example.dayscheduler.ui.settings.SettingsView
 import com.example.dayscheduler.ui.task.create.CreateTaskView
 import com.example.dayscheduler.ui.task.create.CreateTaskViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = BottomNavItem.Current.screen_route) {
@@ -31,7 +32,8 @@ fun Navigation(navController: NavHostController) {
             )
         }
         composable(route = BottomNavItem.AllSchedules.screen_route) {
-            AllSchedulesView()
+            val viewModel: CompletedTaskViewModel = hiltViewModel()
+            CompletedTaskView(viewModel)
         }
         composable(route = BottomNavItem.Settings.screen_route) {
             SettingsView()
