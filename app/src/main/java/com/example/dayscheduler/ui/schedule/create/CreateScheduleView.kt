@@ -154,7 +154,7 @@ fun FloatingActionButtonComplete(
 @Composable
 fun TasksView(task: TaskItem, createScheduleViewModel: CreateScheduleViewModel) {
     var backgroundColor by remember {
-        mutableStateOf(Color.White)
+        if(task.isSelected.value)mutableStateOf(Color.Cyan) else mutableStateOf(Color.White)
     }
     Card(elevation = 4.dp, modifier = Modifier
         .padding(8.dp)

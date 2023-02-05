@@ -79,7 +79,7 @@ fun CurrentScheduleView(
                     EmptyScheduleText(onAddTasksClick)
                 }
             } else {
-                items(tasks) { item ->
+                items(tasks, key = {item: TaskItem -> item.id }) { item ->
                     TaskRow(item, viewModel)
                 }
             }
@@ -115,7 +115,7 @@ fun AllTasksFinishedView(onClick: () -> Unit) {
 @Composable
 fun TaskRow(task: TaskItem, viewModel: CurrentScheduleViewModel) {
     var backgroundColor by remember {
-        mutableStateOf(Color.White)
+        if(task.isSelected.value)mutableStateOf(Color.Cyan) else mutableStateOf(Color.White)
     }
     Card(elevation = 4.dp, modifier = Modifier
         .padding(8.dp)
