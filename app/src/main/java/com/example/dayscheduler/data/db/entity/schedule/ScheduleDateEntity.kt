@@ -25,5 +25,6 @@ data class ScheduleDateEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val scheduleId: Int,
-    val day: Int
+    val day: Int,
+    val date: ZonedDateTime
 )

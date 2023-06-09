@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dayscheduler.data.db.entity.ScheduleFull
+import com.example.dayscheduler.data.db.entity.schedule.ScheduleDateEntity
 import com.example.dayscheduler.data.db.entity.schedule.ScheduleEntity
 import com.example.dayscheduler.data.db.entity.task.TaskScheduleEntity
 import com.example.dayscheduler.domain.repository.ScheduleRepository
@@ -119,6 +120,10 @@ class CreateScheduleViewModel @Inject constructor(
         }
     }
 
+    private fun currentDate(){
+        val currentDate = ZonedDateTime.now().dayOfWeek
+    }
+
     fun save(){
         if(
             _selectedTasks.value.isNotEmpty()
@@ -137,11 +142,14 @@ class CreateScheduleViewModel @Inject constructor(
                         scheduleId.toInt()
                     )
                 }
-                val roomTasks =if(_currentSchedule.value?.tasks?.isNotEmpty() == true) _currentSchedule.value!!.tasks else emptyList<TaskScheduleEntity>()
+                val roomTasks =if(_currentSchedule.value?.tasks?.isNotEmpty() == true) _currentSchedule.value!!.tasks else emptyList()
                 Log.d(TAG.commonTag,"tasks: $tasks")
                 val tasksToInsert : List<TaskScheduleEntity> =
                     tasks + roomTasks
                 scheduleRepository.saveTaskScheduleWithCorrespondingId(tasksToInsert)
+                scheduleRepository.saveScheduleDate(ScheduleDateEntity(
+                    0, scheduleId.toInt(), ZonedDateTime.now().dayOfWeek.value, ZonedDateTime.now()
+                ))
                 _scheduleSaved.postValue(value = true)
             }
 

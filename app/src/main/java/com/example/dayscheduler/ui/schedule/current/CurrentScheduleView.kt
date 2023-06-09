@@ -14,16 +14,20 @@ import androidx.compose.ui.unit.dp
 import com.example.dayscheduler.ui.theme.schedulerColors
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Commit
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import com.example.dayscheduler.ui.schedule.create.FloatingActionButtonComplete
 import com.example.dayscheduler.ui.schedule.create.TaskItem
+import com.example.dayscheduler.ui.theme.Teal200
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -50,7 +54,7 @@ fun CurrentScheduleView(
             onClick = {
                 viewModel.markAsCompleted()
             },
-            icon = Icons.Filled.Commit,
+            icon = Icons.Filled.Check,
             modifier = Modifier.alpha(fabAlpha.value)
         )
     }) { paddingValues ->
@@ -89,33 +93,43 @@ fun CurrentScheduleView(
 
 @Composable
 fun AllTasksFinishedView(onClick: () -> Unit) {
-    Column (
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(backgroundColor)
-            .padding(8.dp),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.Start
+    Card(
+        modifier = Modifier.padding(8.dp),
+        elevation = 4.dp,
+        shape = RoundedCornerShape(4.dp)
     ) {
-        Text(
-            text = "All tasks has been finished, u can complete your schedule now!",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
-        Button(onClick = { onClick() }) {
-            Text(text = "Complete",
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(8.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = "All tasks has been finished, you can complete your schedule now!",
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                Button(onClick = { onClick() }) {
+                    Text(text = "Complete",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                }
+            }
+
         }
     }
+
 }
 
 @Composable
 fun TaskRow(task: TaskItem, viewModel: CurrentScheduleViewModel) {
     var backgroundColor by remember {
-        if(task.isSelected.value)mutableStateOf(Color.Cyan) else mutableStateOf(Color.White)
+        if(task.isSelected.value)mutableStateOf(Teal200) else mutableStateOf(Color.White)
     }
     Card(elevation = 4.dp, modifier = Modifier
         .padding(8.dp)
@@ -124,7 +138,7 @@ fun TaskRow(task: TaskItem, viewModel: CurrentScheduleViewModel) {
             if (task.isSelected.value) viewModel.addSelectedTask(task)
             else viewModel.removeSelectedTask(task)
             backgroundColor = if (task.isSelected.value) {
-                Color.Cyan
+                Teal200
             } else Color.White
         })
 

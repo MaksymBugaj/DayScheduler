@@ -9,6 +9,7 @@ import com.example.dayscheduler.data.db.dao.TaskDao
 import com.example.dayscheduler.data.db.dao.TaskScheduleDao
 import com.example.dayscheduler.data.db.migrations.RoomMigration3To4
 import com.example.dayscheduler.data.db.migrations.RoomMigration4To5
+import com.example.dayscheduler.data.db.migrations.RoomMigration5To6
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +30,8 @@ class DatabaseModule {
             "db"
         ).addMigrations(
             RoomMigration3To4(),
-            RoomMigration4To5()
+            RoomMigration4To5(),
+            RoomMigration5To6()
         )
             .fallbackToDestructiveMigration()
             .build()

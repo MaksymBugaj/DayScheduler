@@ -1,6 +1,7 @@
 package com.example.dayscheduler.ui.schedule.completed
 
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -26,13 +28,19 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.example.dayscheduler.ui.schedule.create.TaskItem
 import com.example.dayscheduler.ui.schedule.current.CurrentScheduleViewModel
+import com.example.dayscheduler.ui.theme.Teal200
+import com.example.dayscheduler.ui.theme.schedulerColors
 import kotlinx.coroutines.delay
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CompletedTaskView(viewModel: CompletedTaskViewModel) {
     val finishedTasks by viewModel.completedTasks.observeAsState(initial = emptyList())
     LazyColumn() {
+        stickyHeader {
+            CompletedTasksForTodayText()
+        }
         items(finishedTasks){ item ->
             TaskRow(task = TaskItem(item), viewModel = viewModel)
         }
@@ -48,16 +56,15 @@ fun TaskRow(task: TaskItem, viewModel: CompletedTaskViewModel) {
         .padding(8.dp)
         .selectable(selected = task.isSelected.value, onClick = {
             task.toggle()
-//            if (task.isSelected.value) {
-//                viewModel.addSelectedTask(task)
-//            } else {
-//                viewModel.removeSelectedTask(task)
-//            }
+            if (task.isSelected.value) {
+                viewModel.addSelectedTask(task)
+            } else {
+                viewModel.removeSelectedTask(task)
+            }
             backgroundColor = if (task.isSelected.value) {
-                Color.Cyan
+                Teal200
             } else Color.White
         })
-
     ) {
         Column (modifier = Modifier
             .fillMaxWidth()
@@ -72,12 +79,24 @@ fun TaskRow(task: TaskItem, viewModel: CompletedTaskViewModel) {
                 Text(text = it, fontWeight = FontWeight.Bold,
                     color = Color.Black,)
             }
-
         }
-
     }
 }
 
+@Composable
+fun CompletedTasksForTodayText() {
+    Text(
+        text = "Completed tasks",
+        modifier = Modifier.padding(
+            start = 16.dp,
+            top = 16.dp,
+            bottom = 16.dp
+        ),
+        color = MaterialTheme.schedulerColors.defaultFont,
+        fontWeight = FontWeight.SemiBold,
+        style = MaterialTheme.typography.h5
+    )
+}
 
 @Composable
 fun FinishedTasksView(viewModel: CompletedTaskViewModel) {

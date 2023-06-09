@@ -22,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.dayscheduler.data.db.entity.task.TaskEntity
+import com.example.dayscheduler.ui.theme.Teal200
+import com.example.dayscheduler.ui.theme.lightGrey
 import com.example.dayscheduler.ui.util.TAG
 
 @Composable
@@ -143,10 +145,9 @@ fun CreateSchedule(tasks: List<TaskItem>, viewModel: CreateScheduleViewModel) {
 fun FloatingActionButtonComplete(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: ImageVector = Icons.Filled.Add,
-
+    icon: ImageVector = Icons.Filled.Add
 ) {
-    FloatingActionButton(onClick = { onClick() }, backgroundColor = Color.Black, contentColor = Color.Magenta, modifier = modifier) {
+    FloatingActionButton(onClick = { onClick() }, backgroundColor = lightGrey, contentColor = Teal200, modifier = modifier) {
         Icon(icon, "")
     }
 }
@@ -154,7 +155,7 @@ fun FloatingActionButtonComplete(
 @Composable
 fun TasksView(task: TaskItem, createScheduleViewModel: CreateScheduleViewModel) {
     var backgroundColor by remember {
-        if(task.isSelected.value)mutableStateOf(Color.Cyan) else mutableStateOf(Color.White)
+        if(task.isSelected.value)mutableStateOf(Teal200) else mutableStateOf(Color.White)
     }
     Card(elevation = 4.dp, modifier = Modifier
         .padding(8.dp)
@@ -166,7 +167,7 @@ fun TasksView(task: TaskItem, createScheduleViewModel: CreateScheduleViewModel) 
                 createScheduleViewModel.removeSelectedTask(task)
             }
             backgroundColor = if (task.isSelected.value) {
-                Color.Cyan
+                Teal200
             } else Color.White
         })
 
