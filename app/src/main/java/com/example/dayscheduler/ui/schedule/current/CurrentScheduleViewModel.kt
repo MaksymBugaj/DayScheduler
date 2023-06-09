@@ -13,12 +13,16 @@ import com.example.dayscheduler.util.livedata.SafeLiveData
 import com.example.dayscheduler.util.livedata.SafeMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrentScheduleViewModel @Inject constructor(
     private val scheduleRepository: ScheduleRepository
 ) : ViewModel() {
+
+    private val _loading = SafeMutableLiveData<Boolean>(true)
+    val loading: SafeLiveData<Boolean> = _loading
 
     private val _tasks = SafeMutableLiveData<List<TaskItem>>()
     val tasks: SafeLiveData<List<TaskItem>> get() = _tasks
@@ -35,7 +39,21 @@ class CurrentScheduleViewModel @Inject constructor(
     val allTasksFinished: LiveData<Boolean> = _allTasksFinished
 
     init {
-        updateInfo()
+        getCurrentSchedule()
+    }
+
+    private fun getCurrentSchedule(){
+        viewModelScope.launch {
+            scheduleRepository.getCurrentSchedule()?.let { scheduleFull ->
+                scheduleFull.scheduleDates.firstOrNull()?.let {
+                    if(it.date.dayOfWeek.value == ZonedDateTime.now().dayOfWeek.value) {
+                        updateInfo()
+                    } else {
+                        completeSchedule()
+                    }
+                }
+            }
+        }
     }
 
     //fixme to be deleted and put flow here
@@ -77,7 +95,19 @@ class CurrentScheduleViewModel @Inject constructor(
 
     fun completeSchedule() {
         viewModelScope.launch {
+            completeAllTasks()
             scheduleRepository.markScheduleAsFinished()
+            scheduleRepository.deleteAllTaskFromFinishedSchedules()
+            updateInfo()
         }
+    }
+
+    private fun completeAllTasks() {
+        _currentScheduleTasks.value?.map{it.copy(isActive = false)}
+            ?.let {
+                viewModelScope.launch {
+                    scheduleRepository.markTaskAsCompleted(it)
+                }
+            }
     }
 }

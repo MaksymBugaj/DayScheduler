@@ -78,10 +78,14 @@ class ScheduleRepository @Inject constructor(
             getCurrentSchedule()?.let {
                 scheduleDao.markScheduleAsCompleted(it.schedule.copy(finished = true))
             }
-
         }
     }
 
-
-
+    suspend fun deleteAllTaskFromFinishedSchedules() {
+        withContext(Dispatchers.IO){
+            getCurrentSchedule()?.let {
+                taskScheduleDao.deleteAllFinishedTasksFromFinishedSchedules(it.schedule.id)
+            }
+        }
+    }
 }

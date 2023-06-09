@@ -10,13 +10,13 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
+    primary = Teal200,
     primaryVariant = Purple700,
     secondary = Teal200
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
+    primary = Teal200,
     primaryVariant = Purple700,
     secondary = Teal200
 
@@ -30,15 +30,15 @@ private val LightColorPalette = lightColors(
     */
 )
 
-val scheduleLightColorPalete = SchedulerColors(
+val scheduleLightColorPalette = SchedulerColors(
     defaultFont = Color.Black
 )
 
-val scheduleDarkColorPalete = SchedulerColors(
+val scheduleDarkColorPalette = SchedulerColors(
     defaultFont = Color.White
 )
 
-val localColors = staticCompositionLocalOf { scheduleLightColorPalete }
+val localColors = staticCompositionLocalOf { scheduleLightColorPalette }
 
 @Composable
 fun DaySchedulerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {

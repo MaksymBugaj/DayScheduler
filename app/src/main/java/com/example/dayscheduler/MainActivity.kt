@@ -49,9 +49,8 @@ fun MainScreenView() {
 fun BottomNavigation(navController: NavController) {
     val items = listOf(
         BottomNavItem.Current,
-        BottomNavItem.AllSchedules,
-        BottomNavItem.CreateSchedule,
-        BottomNavItem.Settings
+        BottomNavItem.CompletedTasks,
+        BottomNavItem.CreateSchedule
     )
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.background,
@@ -165,4 +164,16 @@ fun BottomNavigation(navController: NavController) {
  *
  * taskschedule entity
  * if current tasks list is empty && schedule.tasks.isNotEmpty then show button with finish schedule
+ *
+ *
+ * update 7.06 xd
+ * no to mamy wyświetlanie tasków na dzień dzisiejszy, kończenie tasków itp itd. Można powiedzieć że wszystko śmiga
+ * - pozmieniać nazwy na current, completed, create
+ * - pozbyć się settings
+ * - zmienić ikony do kończenia zadań, jak również kolor tła
+ * - dodać nagłówek w completed
+ * - dodać ładowanie tasków
+ *
+ * update 8.06
+ * - sklep release
  */

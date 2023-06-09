@@ -1,5 +1,6 @@
 package com.example.dayscheduler.ui.task.create
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.dayscheduler.ui.theme.Teal200
 
 @Composable
 fun CreateTaskView(
@@ -44,7 +46,9 @@ fun CreateTaskView(
                 }, label = {
                     Text(text = "additional info")
                 })
-                Button(onClick = { viewModel.save() }) {
+                Button(
+                    onClick =  viewModel::save
+                ) {
                     Text(text = "Save")
                 }
             }
